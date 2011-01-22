@@ -61,6 +61,13 @@ static void SNReachabilityCallback(SCNetworkReachabilityRef	target, SCNetworkCon
 	return [NSURL URLWithString:[NSString stringWithFormat:@"https://simple-note.appspot.com%@%@", path, queryStr]];
 }
 
++ (NSURL*)urlForNoteWithKey:(NSString*)key parameters:(NSDictionary*)params {
+	NSString *path = key == nil
+		? @"/api2/data"
+		: [NSString stringWithFormat:@"/api2/data/%@", key];
+	return [self servletURLWithPath:path parameters:params];
+}
+
 #if 0
 + (NSString*)localizedNetworkDiagnosticMessage {
 	
@@ -703,6 +710,7 @@ static void SNReachabilityCallback(SCNetworkReachabilityRef	target, SCNetworkCon
 			NSNumber *modNum = [info objectForKey:@"modify"];
 			[note setDateAdded:[[info objectForKey:@"create"] doubleValue]];
 			[note setDateModified:[modNum doubleValue]];
+			[note setLabelString:[[info objectForKey:@"tags"] componentsJoinedByString:@" "]];
 			//also set mod time, key, and sepWCtx for this note's syncServicesMD
 			[note setSyncObjectAndKeyMD:[NSDictionary dictionaryWithObjectsAndKeys:modNum, @"modify", 
 										 [info objectForKey:@"key"], @"key", separator, SimplenoteSeparatorKey, nil] 

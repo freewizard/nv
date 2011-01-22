@@ -27,6 +27,7 @@
 	NSData *dataToSend;
 	NSURLConnection *urlConnection;
 	NSURL *requestURL;
+	NSString* requestMethod;
 	NSDictionary *headers;
 	id representedObject;
 	
@@ -39,7 +40,9 @@
 }
 
 - (id)initWithURL:(NSURL*)aURL bodyStringAsUTF8B64:(NSString*)stringToEncode delegate:(id)aDelegate;
+- (id)initWithURL:(NSURL*)aURL bodyString:(NSString*)body delegate:(id)aDelegate;
 - (id)initWithURL:(NSURL*)aURL POSTData:(NSData*)POSTData delegate:(id)aDelegate;
+- (id)initWithURL:(NSURL*)aURL method:(NSString*)httpMethod delegate:(id)aDelegate;
 - (void)setRepresentedObject:(id)anObject;
 - (id)representedObject;
 - (NSInvocation*)successInvocation;
@@ -47,6 +50,8 @@
 - (NSDictionary*)headers;
 - (NSInteger)statusCode;
 - (NSString*)errorMessage;
+- (NSData*)receivedData;
+- (NSString*)receivedBody;
 - (void)_fetchDidFinishWithError:(NSString*)anErrString;
 - (id)delegate;
 - (BOOL)start;
